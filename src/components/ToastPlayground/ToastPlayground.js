@@ -22,10 +22,10 @@ function ToastPlayground() {
       return;
     }
 
-    handleToastAdd(messageValue, selectedVariant);
-
     setMessageValue("");
     setSelectedVariant("notice");
+
+    handleToastAdd(messageValue, selectedVariant);
   }
 
   return (
