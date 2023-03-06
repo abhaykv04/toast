@@ -1,6 +1,7 @@
 import React, { useId, useState } from "react";
 
 import Button from "../Button";
+import Toast from "../Toast";
 
 import styles from "./ToastPlayground.module.css";
 
@@ -10,6 +11,7 @@ function ToastPlayground() {
   const id = useId();
   const [messageValue, setMessageValue] = useState("");
   const [selectedVariant, setSelectedVariant] = useState("");
+  const [showToast, setShowToast] = useState(false);
 
   return (
     <div className={styles.wrapper}>
@@ -17,6 +19,14 @@ function ToastPlayground() {
         <img alt="Cute toast mascot" src="/toast.png" />
         <h1>Toast Playground</h1>
       </header>
+
+      {showToast && (
+        <Toast
+          messageValue={messageValue}
+          selectedVariant={selectedVariant}
+          setShowToast={setShowToast}
+        />
+      )}
 
       <div className={styles.controlsWrapper}>
         <div className={styles.row}>
@@ -61,7 +71,15 @@ function ToastPlayground() {
         <div className={styles.row}>
           <div className={styles.label} />
           <div className={`${styles.inputWrapper} ${styles.radioWrapper}`}>
-            <Button>Pop Toast!</Button>
+            <Button
+              onClick={() => {
+                if (messageValue && selectedVariant) {
+                  setShowToast(true);
+                }
+              }}
+            >
+              Pop Toast!
+            </Button>
           </div>
         </div>
       </div>
