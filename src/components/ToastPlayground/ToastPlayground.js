@@ -1,6 +1,7 @@
-import React, { useEffect, useId, useRef, useState } from "react";
+import React, { useContext, useId, useState } from "react";
 
 import Button from "../Button";
+import { ToastContext } from "../ToastProvider/ToastProvider";
 import ToastShelf from "../ToastShelf/ToastShelf";
 
 import styles from "./ToastPlayground.module.css";
@@ -11,46 +12,30 @@ function ToastPlayground() {
   const id = useId();
   const [messageValue, setMessageValue] = useState("");
   const [selectedVariant, setSelectedVariant] = useState("notice");
-  const [toastList, setToastList] = useState([]);
 
-  function handleToastAdd(event) {
+  const { toastList, handleToastAdd } = useContext(ToastContext);
+
+  function handleSubmit(event) {
     event.preventDefault();
 
     if (!messageValue) {
       return;
     }
 
-    const nextToastList = toastList;
+    handleToastAdd(messageValue, selectedVariant);
 
-    nextToastList.push({
-      id: crypto.randomUUID(),
-      messageValue,
-      selectedVariant,
-    });
-
-    setToastList(nextToastList);
     setMessageValue("");
     setSelectedVariant("notice");
   }
 
-  function handleToastDismiss(id) {
-    const nextToastList = toastList.filter((toast) => toast.id !== id);
-    setToastList(nextToastList);
-  }
-
   return (
-    <form className={styles.wrapper} onSubmit={handleToastAdd}>
+    <form className={styles.wrapper} onSubmit={handleSubmit}>
       <header>
         <img alt="Cute toast mascot" src="/toast.png" />
         <h1>Toast Playground</h1>
       </header>
 
-      {toastList.length > 0 && (
-        <ToastShelf
-          toastList={toastList}
-          handleToastDismiss={handleToastDismiss}
-        />
-      )}
+      {toastList.length > 0 && <ToastShelf />}
 
       <div className={styles.controlsWrapper}>
         <div className={styles.row}>
