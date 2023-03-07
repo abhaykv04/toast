@@ -9,7 +9,7 @@ function ToastProvider({ children }) {
   useKeyDown("Escape", () => handleDismissAll());
 
   function handleToastAdd(message, variant) {
-    const nextToastList = toastList;
+    const nextToastList = [...toastList];
 
     nextToastList.push({
       id: crypto.randomUUID(),
